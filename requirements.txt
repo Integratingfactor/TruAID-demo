@@ -1,2 +1,4 @@
 google-adk[database]~=1.2.1
+modelcontextprotocol
+mcp[cli]
 fastapi
