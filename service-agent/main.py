@@ -50,10 +50,10 @@ async def submit_translation_task(task: TranslationTask):
 
             # Key Concept: is_final_response() marks the concluding message for the turn.
             if event.is_final_response():
-                #### in case of SSE / streaming, partial response is being collected
-                # if event.content and event.content.parts:
-                #     # full_response_text += "\n" + ''.join(part.text for part in event.content.parts if part.text)
-                #     full_response_text = event.content.parts[0].text
+                ### in case of SSE / streaming, partial response is being collected
+                if event.content and event.content.parts:
+                    # full_response_text += "\n" + ''.join(part.text for part in event.content.parts if part.text)
+                    full_response_text = event.content.parts[0].text
                 if event.actions and event.actions.escalate:  # Handle potential errors/escalations
                     full_response_text += f"\nAgent escalated: {event.error_message or 'No specific message.'}\n"
                 #### in case of SSE, we just keep looping until run_async does EOF and loop ends itself
