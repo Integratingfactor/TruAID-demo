@@ -14,7 +14,7 @@
 ---
 
 ## 🧱 Architecture Overview
-
+```
       +------------+       A2A Protocol       +------------+
       |  Agent A   |  <-------------------->  |  Agent B   |
       +------------+                         +------------+
@@ -41,7 +41,7 @@
                     |     TruAID Dashboard   |
                     |  (via W&B + blockchain)|
                     +------------------------+
-
+```
 ---
 
 ## Usage
