@@ -76,7 +76,7 @@
 ### Running the Service Agent
 1.  (Option 1) -- use ADK web
     ```
-    (source .env; adk web)
+    (source .env; adk web --port 7000)
     ```
 1.  (Option 2) -- run the agent's service endpoint
     ```
