@@ -1,1 +1,2 @@
 google-adk[database]~=1.2.1
+fastapi
