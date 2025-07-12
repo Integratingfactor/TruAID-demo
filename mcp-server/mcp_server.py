@@ -61,7 +61,7 @@ def force_anchor() -> AnchorResult:
         raise RuntimeError("Anchor failed: " + response.text)
     return AnchorResult(**response.json())
 
-@mcp.resource("blockchain://chain")
+@mcp.tool()
 def get_blockchain_chain() -> List[ChainBlock]:
     """Fetch the full blockchain from the backend."""
     logger.info("[get_blockchain_chain] Fetching blockchain chain")
@@ -69,7 +69,7 @@ def get_blockchain_chain() -> List[ChainBlock]:
     logger.info(f"[get_blockchain_chain] Chain fetch status: {response.status_code}")
     return [ChainBlock(**b) for b in response.json()]
 
-@mcp.resource("blockchain://valid")
+@mcp.tool()
 def validate_blockchain() -> dict:
     """Validate the current state of the blockchain."""
     logger.info("[validate_blockchain] Validating blockchain")
@@ -80,8 +80,4 @@ def validate_blockchain() -> dict:
 # === Run MCP Server ===
 if __name__ == "__main__":
     logger.info("[startup] Starting MCP Blockchain Tool server on host 0.0.0.0, port 3000...")
-    mcp.run(server="http", host="0.0.0.0", port=3000)
-    #from anyio import run
-    #run(mcp.run_http, host="0.0.0.0", port=3000, backend="asyncio")
-    #mcp.run()
-
+    mcp.run()
