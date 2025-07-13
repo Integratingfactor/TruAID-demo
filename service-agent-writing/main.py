@@ -8,10 +8,12 @@ from google.genai import types
 from .agent import root_agent  # Ensure agent is imported to register it
 
 USER_ID = "user_id_1234"
-APP_NAME = "demo_service_agent"
+APP_NAME = "service_agent_writing"
 
 app = FastAPI()
-weave.init("TruAID")
+# PII ignore, reference: https://weave-docs.wandb.ai/guides/tracking/redact-pii/
+weave.init("TruAID", settings={"redact_pii": True, "redact_pii_fields":["CREDIT_CARD", "US_SSN"]})
+
 session_service = InMemorySessionService()
 
 class TranslationTask(BaseModel):
@@ -19,16 +21,16 @@ class TranslationTask(BaseModel):
     target_language: str
 
 @weave.op()
-@app.post("/translate")
-async def submit_translation_task(task: TranslationTask):
+@app.post("/program")
+async def submit_programming_task(task: TranslationTask):
     if not task.text or not task.target_language:
-        raise HTTPException(status_code=400, detail="Text and target language must be provided")
+        raise HTTPException(status_code=400, detail="Writing stories based on the topics given")
     session=await session_service.create_session(
                     user_id=USER_ID, app_name=APP_NAME,
                 )
     adk_runner = Runner(session_service=session_service,
                     agent=root_agent,
-                    app_name="demo_service_agent")
+                    app_name="service_agent_writing",)
     # Prepare the user's message in ADK format
     content = types.Content(role='user', parts=[types.Part(text=task.text)])
 
@@ -75,4 +77,4 @@ async def submit_translation_task(task: TranslationTask):
         raise e
 
     # The agent's final response is returned as a string.
-    return {"translated_text": full_response_text}
+    return {"coding_results": full_response_text}

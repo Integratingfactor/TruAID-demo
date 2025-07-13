@@ -2,10 +2,10 @@ from google.adk.agents import Agent
 from .prompt import PROMPT
 
 root_agent = Agent(
-    name="demo_service_agent",
+    name="service_agent_writing",
     model="gemini-2.5-flash-preview-05-20",
     description=(
-        "A demo service agent that translates user's english text into a target language."
+        "A demo service agent that writes stories."
         ),
     instruction=PROMPT,
     tools=[],

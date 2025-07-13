@@ -2,3 +2,5 @@ google-adk
 mcp[cli]
 fastapi
 weave
+presidio-analyzer 
+presidio-anonymizer
