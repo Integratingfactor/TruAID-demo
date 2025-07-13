@@ -1,0 +1,19 @@
+{
+  "name": "service_agent_programming",
+  "description": "A demo service agent that helps explain, debug, and generate code snippets.",
+  "model": "gemini-2.5-flash-preview-05-20",
+  "tags": ["programming", "debugging", "code-gen", "gemini"],
+  "api": {
+    "base_url": "http://localhost:9002",
+    "health_check": "/code",
+    "openapi_url": "/openapi.json"
+  },
+  "tools": [],
+  "instruction": "Assist users with programming-related tasks, such as debugging code or writing snippets in various languages.",
+  "author": {
+    "name": "TruAID",
+    "contact": "support@truaid.example.com"
+  },
+  "version": "0.1.0"
+}
+

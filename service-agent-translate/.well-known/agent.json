@@ -1,0 +1,18 @@
+{
+  "name": "service_agent_translate",
+  "description": "A demo service agent that translates user's English text into a target language.",
+  "model": "gemini-2.5-flash-preview-05-20",
+  "tags": ["translation", "gemini", "multilingual", "demo"],
+  "api": {
+    "base_url": "http://localhost:9001",
+    "health_check": "/translate"
+  },
+  "tools": [],
+  "instruction": "Translate the user input from English into the specified target language.",
+  "author": {
+    "name": "TruAID",
+    "contact": "support@truaid.example.com"
+  },
+  "version": "0.1.0"
+}
+

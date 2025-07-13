@@ -21,7 +21,7 @@ class TranslationTask(BaseModel):
     target_language: str
 
 @weave.op()
-@app.post("/program")
+@app.post("/writing")
 async def submit_programming_task(task: TranslationTask):
     if not task.text or not task.target_language:
         raise HTTPException(status_code=400, detail="Writing stories based on the topics given")
