@@ -6,6 +6,8 @@ from google.adk.sessions import InMemorySessionService
 from google.adk.runners import Runner
 from google.genai import types
 from .agent import root_agent  # Ensure agent is imported to register it
+from .cardtool import get_agent_card as get_agent_card_tool
+from service_agent_translate.agent import root_agent  # Ensure agent is imported to register it
 
 USER_ID = "user_id_1234"
 APP_NAME = "service_agent_programming"
@@ -26,7 +28,9 @@ async def submit_programming_task(task: TranslationTask):
     if not task.text or not task.target_language:
         raise HTTPException(status_code=400, detail="Programming task text and target language must be provided")
     session=await session_service.create_session(
-                    user_id=USER_ID, app_name=APP_NAME,
+                    user_id=USER_ID, app_name=APP_NAME,state={
+                        "target_language": task.target_language,
+                        "agent_card": get_agent_card() }
                 )
     adk_runner = Runner(session_service=session_service,
                     agent=root_agent,
@@ -84,5 +88,5 @@ import os
 
 @app.get("/.well-known/agent.json")
 async def get_agent_card():
-    return FileResponse(os.path.join(os.path.dirname(__file__), ".well-known", "agent.json"))
-
+    return get_agent_card_tool()
+    #return FileResponse(os.path.join(os.path.dirname(__file__), ".well-known", "agent.json"))
