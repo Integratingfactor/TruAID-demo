@@ -11,7 +11,9 @@ USER_ID = "user_id_1234"
 APP_NAME = "demo_service_agent"
 
 app = FastAPI()
-weave.init("TruAID")
+# PII ignore, reference: https://weave-docs.wandb.ai/guides/tracking/redact-pii/
+weave.init("TruAID", settings={"redact_pii": True, "redact_pii_fields":["CREDIT_CARD", "US_SSN"]})
+
 session_service = InMemorySessionService()
 
 class TranslationTask(BaseModel):
