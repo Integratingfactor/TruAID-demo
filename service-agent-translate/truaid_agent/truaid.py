@@ -1,7 +1,7 @@
 import datetime
-import hashlib
+from google.adk.tools import ToolContext
 
-def generate_agent_context(agent_id: str) -> dict:
+def generate_agent_context(agent_id: str, tool_context: ToolContext) -> dict:
     """
     Generate a context dictionary for the given agent_id.
 
@@ -13,9 +13,11 @@ def generate_agent_context(agent_id: str) -> dict:
     output_hash = "sha256:out789"   # Example output hash
     policy_id = "policy:default-v1" # Example policy ID
     signature = "0xsigexample"      # Example signature
+    mem_dict = tool_context.state
 
     context = {
         "agent_id": agent_id,
+        "agent_card": mem_dict.get("agent_card", '{"error": "agent_card not found in memory"}'),  # Fetch from memory
         "model_digest": model_digest,
         "input_hash": input_hash,
         "output_hash": output_hash,
