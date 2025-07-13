@@ -53,7 +53,7 @@
     python3.12 -m venv .venv
     ```
     ```
-    source .venv/bin/activave
+    source .venv/bin/activate
     ```
 
 1.  install project dependencies
