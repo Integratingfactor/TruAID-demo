@@ -22,7 +22,7 @@ TOOL_SERVER_URL = "http://127.0.0.1:3000"
 # === Data Models ===
 class MCPContext(BaseModel):
     agent_id: str
-    agent_card: str
+    agent_card: dict
     model_digest: str
     input_hash: str
     output_hash: str
@@ -55,7 +55,7 @@ class MCPRequest(BaseModel):
 # The parameters are passed as individual arguments, not as a single dict
 def submit_context(agent_id: str,
     model_digest: str,
-    agent_card: str,
+    agent_card: dict,
     input_hash: str,
     output_hash: str,
     policy_id: str,

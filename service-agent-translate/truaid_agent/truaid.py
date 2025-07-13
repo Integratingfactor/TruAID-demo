@@ -1,4 +1,4 @@
-import datetime
+import datetime, json
 from google.adk.tools import ToolContext
 
 def generate_agent_context(agent_id: str, tool_context: ToolContext) -> dict:
@@ -17,7 +17,8 @@ def generate_agent_context(agent_id: str, tool_context: ToolContext) -> dict:
 
     context = {
         "agent_id": agent_id,
-        "agent_card": mem_dict.get("agent_card", '{"error": "agent_card not found in memory"}'),  # Fetch from memory
+        # "agent_card": json.dumps(mem_dict.get("agent_card", '{"error": "agent_card not found in memory"}')),  # Fetch from memory
+        "agent_card": mem_dict.get('agent_card', {'error': 'agent_card not found in memory'}),
         "model_digest": model_digest,
         "input_hash": input_hash,
         "output_hash": output_hash,
