@@ -28,7 +28,7 @@ async def submit_translation_task(task: TranslationTask):
     session=await session_service.create_session(
                     user_id=USER_ID, app_name=APP_NAME, state={
                         "target_language": task.target_language,
-                        })
+                        "agent_card": get_agent_card() })
     adk_runner = Runner(session_service=session_service,
                     agent=root_agent,
                     app_name="service_agent_translate")

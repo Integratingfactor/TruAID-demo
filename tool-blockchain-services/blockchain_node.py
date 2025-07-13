@@ -74,6 +74,7 @@ class Blockchain:
 # === MCP Payload ===
 class MCPContext(BaseModel):
     agent_id: str
+    agent_card: str
     model_digest: str
     input_hash: str
     output_hash: str
@@ -114,6 +115,7 @@ def force_anchor():
     combined_hash = sha256("".join(sorted([json.dumps(log.dict(), sort_keys=True) for log in log_pool])).encode()).hexdigest()
     block = blockchain.add_block({
         "mcp_merkle_root": combined_hash,
+        "agent_cards": [log.agent_card for log in log_pool],
         "log_count": len(log_pool)
     })
     log_pool = []

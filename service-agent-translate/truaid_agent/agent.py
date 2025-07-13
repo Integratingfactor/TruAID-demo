@@ -8,7 +8,7 @@ truaid_agent = Agent(
         name="truaid_agent_translate",
         model="gemini-2.5-flash-preview-05-20",
         description=(
-            "A demo agent that helps with TruAID blockchain operations"
+            "A demo agent that helps with TruAID blockchain operations and agent card registration."
             ),
         instruction=PROMPT,
         tools=[generate_agent_context, MCPToolset(

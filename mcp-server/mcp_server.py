@@ -22,6 +22,7 @@ TOOL_SERVER_URL = "http://127.0.0.1:3000"
 # === Data Models ===
 class MCPContext(BaseModel):
     agent_id: str
+    agent_card: str
     model_digest: str
     input_hash: str
     output_hash: str
@@ -54,6 +55,7 @@ class MCPRequest(BaseModel):
 # The parameters are passed as individual arguments, not as a single dict
 def submit_context(agent_id: str,
     model_digest: str,
+    agent_card: str,
     input_hash: str,
     output_hash: str,
     policy_id: str,
@@ -62,6 +64,7 @@ def submit_context(agent_id: str,
     """Submit a new MCP context to the blockchain tool server."""
     context = MCPContext(
         agent_id=agent_id,
+        agent_card=agent_card,
         model_digest=model_digest,
         input_hash=input_hash,
         output_hash=output_hash,
