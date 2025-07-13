@@ -59,6 +59,10 @@ async def main():
 
             args = parser.parse_args()
 
+            if args.command is None:
+                parser.print_help()
+                return
+
             if args.command == "mcp-submit-context":
                 await submit_mcp_context(session, args.agent_id, args.model_digest, args.input_hash, args.output_hash, args.policy_id, args.timestamp, args.signature)
             elif args.command == "mcp-get-chain":
