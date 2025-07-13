@@ -66,7 +66,8 @@
     export WANDB_PROJECT_ID="TruAID"
     export GOOGLE_GENAI_USE_VERTEXAI="True"
     export WANDB_API_KEY="<<your weave project API key>>"
-    export GOOGLE_CLOUD_PROJECT="<<your GCP project ID>>"
+    export GOOGLE_CLOUD_PROJECT="truaid"
+    export GOOGLE_CLOUD_LOCATION="us-central1"
     ```
 1.  make sure that you have gcloud authenticated for local use
     ```
@@ -76,7 +77,7 @@
 ### Running the Service Agent
 1.  (Option 1) -- use ADK web
     ```
-    (source .env; adk web)
+    (source .env; adk web --port 7000)
     ```
 1.  (Option 2) -- run the agent's service endpoint
     ```
