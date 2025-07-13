@@ -3,39 +3,51 @@ import asyncio
 import json
 from mcp.client.streamable_http import streamablehttp_client
 from mcp import ClientSession
+import datetime
 
-# async def submit_mcp_context(session, agent_id, model_digest, input_hash, output_hash, policy_id, timestamp, signature):
-async def submit_mcp_context(session):
+def print_result(result):
+    if hasattr(result, 'isError') and result.isError:
+        print(f"Error: {result.content}")
+    else:
+        result_json = []
+        for item in result.content:
+            text = getattr(item, 'text', None)
+            if not text:
+                text = item.model_dump() if callable(item.model_dump) else item.model_dump
+            result_json.append(json.loads(text) if isinstance(text, str) and text.startswith('{') else text)
+        print(json.dumps(result_json, indent=2))
+
+async def submit_mcp_context(session, agent_id, model_digest, input_hash, output_hash, policy_id, signature):
     payload = {
-        "agent_id": "agent-001",
-    "model_digest": "sha256:abc123",
-    "input_hash": "sha256:in456",
-    "output_hash": "sha256:out789",
-    "policy_id": "policy:default-v1",
-    "timestamp": "2025-07-12T23:00:00Z",
-    "signature": "0xsigexample"
+        "agent_id": agent_id,
+        "model_digest": model_digest,
+        "input_hash": input_hash,
+        "output_hash": output_hash,
+        "policy_id": policy_id,
+        "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat() + "Z",
+        "signature": signature
     }
     tool_result = await session.call_tool("submit_context", payload)
-    print(tool_result)
+    print_result(tool_result)
 
 async def get_mcp_chain(session):
     tool_result = await session.call_tool("get_blockchain_chain", {})
-    print(tool_result)
+    print_result(tool_result)
 
 async def validate_mcp_chain(session):
     tool_result = await session.call_tool("validate_blockchain", {})
-    print(tool_result)
+    print_result(tool_result)
 
 async def force_mcp_anchor(session):
     tool_result = await session.call_tool("force_anchor", {})
-    print(tool_result)
+    print_result(tool_result)
 
 async def main():
     async with streamablehttp_client("http://127.0.0.1:8000/mcp") as (read_stream, write_stream, _):
         async with ClientSession(read_stream, write_stream) as session:
             await session.initialize()
 
-            parser = argparse.ArgumentParser(description="CLI for MCP Server Service")
+            parser = argparse.ArgumentParser(description="CLI for MCP Service")
             subparsers = parser.add_subparsers(dest="command")
 
             # MCP Submit context command
@@ -45,7 +57,6 @@ async def main():
             mcp_submit_parser.add_argument("input_hash")
             mcp_submit_parser.add_argument("output_hash")
             mcp_submit_parser.add_argument("policy_id")
-            mcp_submit_parser.add_argument("timestamp")
             mcp_submit_parser.add_argument("signature")
 
             # MCP Get chain command
@@ -57,10 +68,18 @@ async def main():
             # MCP Force anchor command
             subparsers.add_parser("mcp-force-anchor", help="Force anchor logs into the MCP blockchain")
 
-            args = parser.parse_args()
+            try:
+                args = parser.parse_args()
+            except Exception as e:
+                parser.print_help()
+                return
+
+            if args.command is None:
+                parser.print_help()
+                return
 
             if args.command == "mcp-submit-context":
-                await submit_mcp_context(session, args.agent_id, args.model_digest, args.input_hash, args.output_hash, args.policy_id, args.timestamp, args.signature)
+                await submit_mcp_context(session, args.agent_id, args.model_digest, args.input_hash, args.output_hash, args.policy_id, args.signature)
             elif args.command == "mcp-get-chain":
                 await get_mcp_chain(session)
             elif args.command == "mcp-validate-chain":
@@ -72,4 +91,3 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
-    main()

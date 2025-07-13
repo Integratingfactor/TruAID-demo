@@ -2,7 +2,7 @@ import requests
 import argparse
 import json
 
-BASE_URL = "http://127.0.0.1:8000"
+BASE_URL = "http://127.0.0.1:3000"
 
 def submit_context(agent_id, model_digest, input_hash, output_hash, policy_id, timestamp, signature):
     url = f"{BASE_URL}/submit-context"

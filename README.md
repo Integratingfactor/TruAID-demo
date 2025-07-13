@@ -15,9 +15,9 @@
 
 ## 🧱 Architecture Overview
 ```
-      +------------+       A2A Protocol       +------------+
-      |  Agent A   |  <-------------------->  |  Agent B   |
-      +------------+                         +------------+
+      +------------+                          +------------+
+      |  Agent A   |  <--- A2A Protocol --->  |  Agent B   |
+      +------------+                          +------------+
            |                                        |
      [Local Action Logs]                    [Local Action Logs]
            |                                        |
@@ -26,6 +26,8 @@
  |  PII-Redaction & |                  |  PII-Redaction & |
  |  Hash Generation |                  |  Hash Generation |
  +------------------+                  +------------------+
+           |                                        |
+        [ MCP ]                                  [ MCP ]
            |                                        |
            +-------------------+--------------------+
                                |
@@ -78,9 +80,13 @@
 ### Running the Service Agent
 1.  (Option 1) -- use ADK web
     ```
-    (source .env; adk web --port 7000)
+    (source .env; adk web --port 8080)
     ```
 1.  (Option 2) -- run the agent's service endpoint
     ```
-    (source .env; uvicorn service-agent.main:app --reload)
+    (source .env; uvicorn service-agent-tranlate.main:app --reload --port 8080)
     ```
+
+### Running the TruAID Blockchain
+
+Refer to the [MCP Blockchain Tool](mcp-server/README.md) documentation.

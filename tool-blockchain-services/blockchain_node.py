@@ -125,6 +125,6 @@ def force_anchor():
 
 # === Entry Point ===
 if __name__ == "__main__":
-    logger.info("Starting Blockchain Tool server on http://127.0.0.1:3000")
+    logger.info("Starting Blockchain Node on http://127.0.0.1:3000")
     uvicorn.run(app, host="127.0.0.1", port=3000)
 
