@@ -67,10 +67,9 @@
     ```
     export GOOGLE_GENAI_USE_VERTEXAI="True"
     export GOOGLE_CLOUD_LOCATION="us-central1"
+    export GOOGLE_CLOUD_PROJECT="truaid"
     export WANDB_PROJECT_ID="<<your weave project ID>>"
     export WANDB_API_KEY="<<your weave project API key>>"
-    export GOOGLE_CLOUD_PROJECT="truaid"
-    export GOOGLE_CLOUD_LOCATION="us-central1"
     ```
 1.  make sure that you have gcloud authenticated for local use
     ```
