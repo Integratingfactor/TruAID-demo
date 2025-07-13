@@ -5,7 +5,7 @@ from pydantic import BaseModel
 from google.adk.sessions import InMemorySessionService
 from google.adk.runners import Runner
 from google.genai import types
-from .agent import root_agent  # Ensure agent is imported to register it
+from .agent import get_agent_async  # Ensure agent is imported to register it
 
 USER_ID = "user_id_1234"
 APP_NAME = "service_agent_writing"
@@ -28,6 +28,7 @@ async def submit_programming_task(task: TranslationTask):
     session=await session_service.create_session(
                     user_id=USER_ID, app_name=APP_NAME,
                 )
+    root_agent = await get_agent_async()
     adk_runner = Runner(session_service=session_service,
                     agent=root_agent,
                     app_name="service_agent_writing",)
