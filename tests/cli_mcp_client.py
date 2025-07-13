@@ -4,22 +4,23 @@ import json
 from mcp.client.streamable_http import streamablehttp_client
 from mcp import ClientSession
 
-async def submit_mcp_context(session, agent_id, model_digest, input_hash, output_hash, policy_id, timestamp, signature):
+# async def submit_mcp_context(session, agent_id, model_digest, input_hash, output_hash, policy_id, timestamp, signature):
+async def submit_mcp_context(session):
     payload = {
-        "agent_id": agent_id,
-        "model_digest": model_digest,
-        "input_hash": input_hash,
-        "output_hash": output_hash,
-        "policy_id": policy_id,
-        "timestamp": timestamp,
-        "signature": signature
+        "agent_id": "agent-001",
+    "model_digest": "sha256:abc123",
+    "input_hash": "sha256:in456",
+    "output_hash": "sha256:out789",
+    "policy_id": "policy:default-v1",
+    "timestamp": "2025-07-12T23:00:00Z",
+    "signature": "0xsigexample"
     }
     tool_result = await session.call_tool("submit_context", payload)
     print(tool_result)
 
 async def get_mcp_chain(session):
     tool_result = await session.call_tool("get_blockchain_chain", {})
-    print(json.dumps(tool_result, indent=2))
+    print(tool_result)
 
 async def validate_mcp_chain(session):
     tool_result = await session.call_tool("validate_blockchain", {})
@@ -30,7 +31,7 @@ async def force_mcp_anchor(session):
     print(tool_result)
 
 async def main():
-    async with streamablehttp_client("example/mcp") as (read_stream, write_stream, _):
+    async with streamablehttp_client("http://127.0.0.1:8000/mcp") as (read_stream, write_stream, _):
         async with ClientSession(read_stream, write_stream) as session:
             await session.initialize()
 

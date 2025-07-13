@@ -1,5 +1,4 @@
 google-adk
-modelcontextprotocol
 mcp[cli]
 fastapi
 weave
