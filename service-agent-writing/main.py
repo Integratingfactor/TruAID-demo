@@ -79,3 +79,11 @@ async def submit_programming_task(task: TranslationTask):
 
     # The agent's final response is returned as a string.
     return {"coding_results": full_response_text}
+
+from fastapi.responses import FileResponse
+import os
+
+@app.get("/.well-known/agent.json")
+async def get_agent_card():
+    return FileResponse(os.path.join(os.path.dirname(__file__), ".well-known", "agent.json"))
+

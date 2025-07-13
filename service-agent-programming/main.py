@@ -21,7 +21,7 @@ class TranslationTask(BaseModel):
     target_language: str
 
 @weave.op()
-@app.post("/program")
+@app.post("/programming")
 async def submit_programming_task(task: TranslationTask):
     if not task.text or not task.target_language:
         raise HTTPException(status_code=400, detail="Programming task text and target language must be provided")
@@ -78,3 +78,11 @@ async def submit_programming_task(task: TranslationTask):
 
     # The agent's final response is returned as a string.
     return {"coding_results": full_response_text}
+
+from fastapi.responses import FileResponse
+import os
+
+@app.get("/.well-known/agent.json")
+async def get_agent_card():
+    return FileResponse(os.path.join(os.path.dirname(__file__), ".well-known", "agent.json"))
+

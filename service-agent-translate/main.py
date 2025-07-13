@@ -5,7 +5,7 @@ from pydantic import BaseModel
 from google.adk.sessions import InMemorySessionService
 from google.adk.runners import Runner
 from google.genai import types
-from .agent import root_agent  # Ensure agent is imported to register it
+from service_agent_translate.agent import root_agent  # Ensure agent is imported to register it
 
 USER_ID = "user_id_1234"
 APP_NAME = "service_agent_translate"
@@ -79,3 +79,12 @@ async def submit_translation_task(task: TranslationTask):
 
     # The agent's final response is returned as a string.
     return {"translated_text": full_response_text}
+
+from fastapi.responses import FileResponse
+import os
+
+@app.get("/.well-known/agent.json")
+async def get_agent_card():
+    return FileResponse(os.path.join(os.path.dirname(__file__), ".well-known", "agent.json"))
+
+
