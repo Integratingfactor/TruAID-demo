@@ -57,7 +57,11 @@ async def main():
             # MCP Force anchor command
             subparsers.add_parser("mcp-force-anchor", help="Force anchor logs into the MCP blockchain")
 
-            args = parser.parse_args()
+            try:
+                args = parser.parse_args()
+            except SystemExit as e:
+                parser.print_help()
+                return
 
             if args.command is None:
                 parser.print_help()
