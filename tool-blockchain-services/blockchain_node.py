@@ -9,6 +9,7 @@ import uvicorn
 import json
 import threading
 import logging
+import secrets
 
 # === Logging Setup ===
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
@@ -21,7 +22,7 @@ class Block:
         self.timestamp = timestamp
         self.data = data
         self.previous_hash = previous_hash
-        self.nonce = 0
+        self.nonce = secrets.randbits(64)
         self.hash = self.compute_hash()
 
     def compute_hash(self):
