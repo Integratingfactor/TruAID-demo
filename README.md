@@ -78,7 +78,7 @@
     ```
 
 ### Running the Service Agents
-1.  Language Translation Service Agent: refer to [`service-agent-tranlate`](service-agent-tranlate/README.md) documentation
+1.  Language Translation Service Agent: refer to [`service-agent-translate`](service-agent-translate/README.md) documentation
 
 ### Running the TruAID Blockchain
 
