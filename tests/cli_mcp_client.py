@@ -35,7 +35,7 @@ async def main():
         async with ClientSession(read_stream, write_stream) as session:
             await session.initialize()
 
-            parser = argparse.ArgumentParser(description="CLI for MCP Server Service")
+            parser = argparse.ArgumentParser(description="CLI for MCP Service")
             subparsers = parser.add_subparsers(dest="command")
 
             # MCP Submit context command
@@ -59,7 +59,7 @@ async def main():
 
             try:
                 args = parser.parse_args()
-            except SystemExit as e:
+            except Exception as e:
                 parser.print_help()
                 return
 
@@ -68,7 +68,8 @@ async def main():
                 return
 
             if args.command == "mcp-submit-context":
-                await submit_mcp_context(session, args.agent_id, args.model_digest, args.input_hash, args.output_hash, args.policy_id, args.timestamp, args.signature)
+                # await submit_mcp_context(session, args.agent_id, args.model_digest, args.input_hash, args.output_hash, args.policy_id, args.timestamp, args.signature)
+                await submit_mcp_context(session)
             elif args.command == "mcp-get-chain":
                 await get_mcp_chain(session)
             elif args.command == "mcp-validate-chain":

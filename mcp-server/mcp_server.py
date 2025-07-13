@@ -3,14 +3,14 @@
 from mcp.server.fastmcp import FastMCP
 from pydantic import BaseModel, Field
 import requests
-from typing import List
+from typing import List, Optional, Dict, Any, Union
 import logging
 import contextlib
 from fastapi import FastAPI
 import uvicorn
 
 # Configure logging
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger("mcp-blockchain-server")
 
 # Initialize MCP server
@@ -42,11 +42,34 @@ class ChainBlock(BaseModel):
     hash: str
     nonce: int
 
-# === MCP Tools ===
+class MCPRequest(BaseModel):
+    jsonrpc: str = "2.0"
+    id: Optional[Union[str, int]] = None
+    method: str
+    params: Optional[Union[MCPContext, AnchorResult, ChainBlock]] = None
 
+# === MCP Tools ===
 @mcp.tool()
-def submit_context(context: MCPContext) -> dict:
-    """Submit a signed MCP context to the blockchain log tool."""
+# Note: The function signature must match the tool call parameters
+# The parameters are passed as individual arguments, not as a single dict
+def submit_context(agent_id: str,
+    model_digest: str,
+    input_hash: str,
+    output_hash: str,
+    policy_id: str,
+    timestamp: str,
+    signature: str) -> dict:
+    """Submit a new MCP context to the blockchain tool server."""
+    context = MCPContext(
+        agent_id=agent_id,
+        model_digest=model_digest,
+        input_hash=input_hash,
+        output_hash=output_hash,
+        policy_id=policy_id,
+        timestamp=timestamp,
+        signature=signature
+    )
+    logger.debug(f"[submit_context] Context to submit: {context.model_dump_json()}")
     logger.info(f"[submit_context] Submitting context for agent {context.agent_id} at {context.timestamp}")
     response = requests.post(f"{TOOL_SERVER_URL}/submit-context", json=context.dict())
     logger.info(f"[submit_context] Tool server response: {response.status_code} {response.text}")
