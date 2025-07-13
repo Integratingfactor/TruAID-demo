@@ -5,7 +5,9 @@ from pydantic import BaseModel, Field
 import requests
 from typing import List
 import logging
-
+import contextlib
+from fastapi import FastAPI
+import uvicorn
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
@@ -15,7 +17,7 @@ logger = logging.getLogger("mcp-blockchain-server")
 mcp = FastMCP("Blockchain Tool MCP")
 
 # Tool server endpoint (e.g., your blockchain tool microservice)
-TOOL_SERVER_URL = "http://127.0.0.1:8000"
+TOOL_SERVER_URL = "http://127.0.0.1:3000"
 
 # === Data Models ===
 class MCPContext(BaseModel):
@@ -77,7 +79,22 @@ def validate_blockchain() -> dict:
     logger.info(f"[validate_blockchain] Validation status: {response.status_code} | Response: {response.text}")
     return response.json()
 
-# === Run MCP Server ===
+# # === Run MCP Server ===
+# # Create a combined lifespan to manage both session managers
+# @contextlib.asynccontextmanager
+# async def lifespan(app: FastAPI):
+#     async with contextlib.AsyncExitStack() as stack:
+#         await stack.enter_async_context(mcp.run(transport="streamable-http"))
+#         yield
+
+# app = FastAPI(lifespan=lifespan)
+app = FastAPI()
+mcp.run(transport="streamable-http")
+app.mount("/", mcp.streamable_http_app())
+
+
 if __name__ == "__main__":
     logger.info("[startup] Starting MCP Blockchain Tool server on host 0.0.0.0, port 3000...")
-    mcp.run()
+    uvicorn.run(app, host="127.0.0.1", port=3000)
+    # # Run the FastMCP server with Streamable HTTP transport
+    # mcp.run(transport="streamable_http", http_stream={"port": 3000})
