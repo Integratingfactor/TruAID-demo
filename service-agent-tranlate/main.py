@@ -26,8 +26,9 @@ async def submit_translation_task(task: TranslationTask):
     if not task.text or not task.target_language:
         raise HTTPException(status_code=400, detail="Text and target language must be provided")
     session=await session_service.create_session(
-                    user_id=USER_ID, app_name=APP_NAME,
-                )
+                    user_id=USER_ID, app_name=APP_NAME, state={
+                        "target_language": task.target_language,
+                        })
     adk_runner = Runner(session_service=session_service,
                     agent=root_agent,
                     app_name="service_agent_translate")
@@ -40,7 +41,7 @@ async def submit_translation_task(task: TranslationTask):
     # We iterate through events to find the final answer.
     try:
         async for event in adk_runner.run_async(
-            user_id="user_id_1234", session_id=session.id,
+            user_id=USER_ID, session_id=session.id,
             new_message=content
         ):
             # # accumulate the full response text if needed

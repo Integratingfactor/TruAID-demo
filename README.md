@@ -77,15 +77,8 @@
     gcloud auth application-default login
     ```
 
-### Running the Service Agent
-1.  (Option 1) -- use ADK web
-    ```
-    (source .env; adk web --port 8080)
-    ```
-1.  (Option 2) -- run the agent's service endpoint
-    ```
-    (source .env; uvicorn service-agent-tranlate.main:app --reload --port 8080)
-    ```
+### Running the Service Agents
+1.  Language Translation Service Agent: refer to [`service-agent-tranlate`](service-agent-tranlate/README.md) documentation
 
 ### Running the TruAID Blockchain
 
