@@ -2,5 +2,6 @@ google-adk
 mcp[cli]
 fastapi
 weave
+litellm
 presidio-analyzer 
 presidio-anonymizer
